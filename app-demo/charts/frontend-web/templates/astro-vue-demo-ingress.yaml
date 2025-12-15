@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: astro-vue-demo-ingress
+  namespace: dev-antonio
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: astro-vue-demo
+            port:
+              number: {{ .Values.servicePort }}
+        path: /
+        pathType: Prefix
+      - backend:
+          service:
+            name: {{ .Values.global.backend.serviceName }}
+            port:
+              number: {{ .Values.global.backend.servicePort }}
+        path: /api
+        pathType: Prefix

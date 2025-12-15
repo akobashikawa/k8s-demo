@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: springboot-demo-ingress
+  namespace: dev-antonio
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: springboot-demo
+            port:
+              number: {{ .Values.servicePort }}
+        path: /
+        pathType: Prefix

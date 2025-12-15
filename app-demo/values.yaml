@@ -1,0 +1,33 @@
+# app-demo/values.yaml
+
+global: # <--- NUEVA SECCIÓN GLOBAL
+  backend:
+    serviceName: springboot-demo
+    servicePort: 8080
+    
+# --------------------------
+# Configuración del Backend 
+# --------------------------
+backend:
+  image:
+    repository: springboot-demo
+    tag: 1.0.0
+  replicaCount: 1
+  serviceName: springboot-demo # <-- Añadir este nombre para usarlo en el Ingress del Frontend
+  servicePort: 8080
+  pullPolicy: Never
+  ingress:
+    host: api-demo.dev-antonio.local
+
+# --------------------------
+# Configuración del Frontend
+# --------------------------
+frontend:
+  image:
+    repository: astro-vue-demo
+    tag: 1.0.0
+  replicaCount: 1
+  servicePort: 80 # Puerto interno de NGINX en el contenedor
+  ingress:
+    host: demo.dev-antonio.local # Host principal
+    # El Frontend no necesita el puerto del backend, pero sí el nombre del Service del Backend.
