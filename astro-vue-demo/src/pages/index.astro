@@ -1,0 +1,27 @@
+---
+import Helloworld from '../components/Helloworld.vue';
+import Hello from '../components/Hello.vue';
+
+const apiBase = import.meta.env.PUBLIC_API_BASE_URL ?? '/';
+console.log('API base (server):', apiBase);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro Vue Demo</title>
+		<link rel="stylesheet" href="https://matcha.mizu.sh/matcha.css">
+	</head>
+	<body>
+		<h1>Astro</h1>
+
+		<p>API Base: {apiBase}</p>
+
+		<Helloworld client:load apiBase={apiBase} />
+
+		<Hello client:load apiBase={apiBase} />
+	</body>
+</html>
