@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  springboot-demo:
+    build:
+      context: ../springboot-demo
+      dockerfile: Dockerfile
+    image: springboot-demo:local
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - appnet
+
+  astro-vue-demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: astro-vue-demo:local
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_BASE_URL: http://springboot-demo:8080
+      API_URL: http://springboot-demo:8080
+    depends_on:
+      - springboot-demo
+    restart: unless-stopped
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
+
