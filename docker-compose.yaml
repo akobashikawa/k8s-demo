@@ -3,7 +3,7 @@ version: '3.8'
 services:
   springboot-demo:
     build:
-      context: ../springboot-demo
+      context: ./springboot-demo
       dockerfile: Dockerfile
     image: springboot-demo:local
     ports:
@@ -22,14 +22,16 @@ services:
 
   astro-vue-demo:
     build:
-      context: .
+      context: ./astro-vue-demo
       dockerfile: Dockerfile
+      args:
+        PUBLIC_API_BASE_URL: ${API_BASE_URL}
     image: astro-vue-demo:local
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
-      VITE_API_BASE_URL: http://springboot-demo:8080
-      API_URL: http://springboot-demo:8080
+      VITE_API_BASE_URL: ${API_BASE_URL}
+      API_URL: ${API_BASE_URL}
     depends_on:
       - springboot-demo
     restart: unless-stopped
